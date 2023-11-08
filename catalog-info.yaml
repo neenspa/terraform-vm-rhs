@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1beta1
+kind: Component
+metadata:
+  name: terraform-vm-rhs
+  metadata:
+  annotations:
+    argocd/app-name: terraform-vm-rhs
+    backstage.io/adr-location: docs/adr
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-id: terraform-vm-rhs
+    backstage.io/kubernetes-namespace: gitops-tekton
+    github.com/project-slug: neenspa/terraform-vm-rhs
+    janus-idp.io/tekton-enabled: "true"
+  links:
+    - url: https://console-openshift-console.apps.democp.vega.local/pipelines/ns/gitops-tekton/
+      title: Pipelines
+      icon: web
+    - url: https://devspaces.apps.democp.vega.local/#https://github.com/neenspa/terraform-vm-rhs?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: pipelines
+  owner: user:guest
+  lifecycle: production

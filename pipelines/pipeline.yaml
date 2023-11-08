@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: terraform-pipeline-terraform-vm-rhs
+  namespace: gitops-tekton
+spec:
+  tasks:
+    - name: github-app-token
+      params:
+        - name: installation_id
+          value: "41977302"
+        - name: application_id
+          value: "392248"
+      taskRef:
+        kind: Task
+        name: github-app-token-terraform-vm-rhs
+      workspaces:
+        - name: secrets
+          workspace: github-secret
+    - name: git-clone
+      params:
+        - name: url
+          value: "https://x-access-token:$(tasks.github-app-token.results.token)@github.com/neenspa/terraform-vm-rhs.git"
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      runAfter:
+        - github-app-token
+      workspaces:
+        - name: output
+          workspace: terraform-files
+    - name: terraform-terraform-vm-rhs
+      taskRef:
+        kind: Task
+        name: terraform-terraform-vm-rhs
+      runAfter:
+        - git-clone
+      workspaces:
+        - name: source
+          workspace: terraform-files
+        - name: terraform-variables
+          workspace: terraform-variables
+  workspaces:
+    - name: terraform-files
+    - name: github-secret
+    - name: terraform-variables
